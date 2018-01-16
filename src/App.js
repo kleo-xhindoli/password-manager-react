@@ -1,23 +1,53 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Storage from './storage.js'
 
+import CreateMasterPw from './components/CreateMasterPw'
+import LogIn from './components/LogIn'
+
 class App extends Component {
     constructor() {
-        let storage = new Storage();
         super();
+        this.storage = new Storage();
+        this.state = {
+            master: null,
+            isLogged: false,
+        }
     }
+
+    componentDidMount() {
+        // this.storage.get('master').then((master) => {
+        //     this.setState({ master });
+        // })
+    }
+
+    createPassword({ newPass, confirmPass }) {
+        if (newPass === confirmPass) {
+            this.setState({master: newPass}, () => console.log(this.state))
+        }
+    }
+
+    logIn(pass) {
+        if (pass === this.state.master) {
+            console.log('perform login')
+        }
+        else {
+            console.log('passwords do not match')
+        }
+    }
+
     render() {
+        const { master } = this.state;
+        if (!master) {
+            return (
+                <div className="App">
+                    <CreateMasterPw onCreatePassword={this.createPassword.bind(this)}/>
+                </div>
+            );
+        }
         return (
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+                <LogIn onLogIn={this.logIn.bind(this)}/>
             </div>
         );
     }

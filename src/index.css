@@ -1,5 +1,64 @@
+/*
+    COLORS:
+        primary: #76C3D7
+    SHADOW:    
+        box-shadow: 0 2px 10px 0 rgba(0,0,0,.16), 0 2px 5px 0 rgba(0,0,0,.26)
+    PADDING:
+        padding: .6em
+
+*/
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: white;
+    padding: 5px;
+}
+
+.App {
+    padding: 2em;
+    background: #eee;
+    width: 300px;
+}
+
+.App .form-wrapper {
+    /* max-width: 270px; */
+    margin: 0 auto;
+}
+
+.App input {
+    padding: .6em;
+    margin-bottom: 1em;
+    width: 100%;
+    display: block;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.App .btn {
+    background: white;
+    padding: .6em;
+    border: 1px solid #eee;
+    outline: none;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,.16), 0 2px 5px 0 rgba(0,0,0,.26);
+}
+
+.App .btn:hover {
+    cursor: pointer;
+}
+
+.App .btn:active {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.4);
+}
+
+.App .btn.btn-primary {
+    background-color: #76C3D7;
+    color: white;
+    border: none;
+}
+
+.App .btn.btn-block {
+    width: 100%;
 }
