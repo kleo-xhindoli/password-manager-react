@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Storage from './storage.js'
+import PasswordManager from './passwordManager.js'
 
 import CreateMasterPw from './components/CreateMasterPw'
 import LogIn from './components/LogIn'
@@ -11,6 +12,7 @@ class App extends Component {
     constructor() {
         super();
         this.storage = new Storage();
+        this.pwManager = new PasswordManager();
         this.master = null;
         this.state = {
             isSetMaster: false,
@@ -35,8 +37,10 @@ class App extends Component {
     createPassword({ newPass, confirmPass }) {
         if (newPass === confirmPass) {
             this.setState({isSetMaster: true}, () => {
-                this.master = newPass;
-                this.storage.set('master', newPass);
+                // this.master = newPass;
+                const { hash, salt } = this.pwManager.hash(newPass);
+                this.storage.set('master', hash);
+                this.storage.set('salt', salt);
             })
             chrome.runtime.sendMessage({action: 'SET_STATE', params: {isSetMaster: true}});
         }
@@ -46,13 +50,18 @@ class App extends Component {
     }
 
     logIn(pass) {
+        let masterHash;
         this.storage.get('master')
         .then((master) => {
-            if (pass === master) { //TODO: check hash instead of plain text
-                this.master = pass;
+            masterHash = master;
+            return this.storage.get('salt')
+        })
+        .then((salt) => {
+            if (this.pwManager.hash(pass, salt).hash === masterHash) {
+                this.master = this.pwManager.generateKeyFromPassword(pass, salt);
                 this.setState({isLogged: true});
                 chrome.runtime.sendMessage({action: 'SET_STATE', params: {isLogged: true}})
-                chrome.runtime.sendMessage({action: 'SET_MASTER', value: pass})
+                chrome.runtime.sendMessage({action: 'SET_MASTER', value: this.master})
             }
             else {
                 console.log('passwords do not match')
