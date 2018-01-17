@@ -42,6 +42,13 @@ class PW_Storage {
         return promise
     }
 
+    clear() {
+        let promise = new Promise((resolve, reject) => {
+            chrome.storage.local.clear(() => resolve())
+        })
+        return promise;
+    }
+
     createCollection(collection) {
         return this.setSoft(collection, [])
     }

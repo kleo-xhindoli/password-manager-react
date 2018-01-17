@@ -1,0 +1,27 @@
+.Footer {
+    margin-top: 50px;
+}
+.Footer .the-footer {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 325px;
+    background: #e0e0e0;
+    padding: .7em;
+    font-size: 16px;
+    border-top: 1px solid #ccc;
+}
+
+.Footer .buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.Footer .buttons .icon-btn {
+    padding: 5px 12px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: 1px solid #bbb;
+    color: #bbb;
+    background: white;
+}
