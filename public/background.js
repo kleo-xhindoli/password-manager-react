@@ -1,4 +1,5 @@
 var state = {};
+var master = null;
 
 chrome.storage.local.get('master', (res) => {
     if (res.master) {
@@ -18,6 +19,13 @@ chrome.runtime.onMessage.addListener(
                 })
                 console.log(state);
                 sendResponse(state);
+                break;
+            case 'SET_MASTER':
+                master = request.value
+                sendResponse(master);
+                break;
+            case 'GET_MASTER':
+                sendResponse(master);
                 break;
         }
     }

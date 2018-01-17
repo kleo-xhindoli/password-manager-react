@@ -25,15 +25,20 @@ class App extends Component {
                 console.log(this.state)
             })
         });
+
+        chrome.runtime.sendMessage({action: 'GET_MASTER'}, (val) => {
+            console.log(`Got master: ${val}`)
+            this.master = val;
+        })
     }
 
     createPassword({ newPass, confirmPass }) {
         if (newPass === confirmPass) {
             this.setState({isSetMaster: true}, () => {
                 this.master = newPass;
-                this.storage.set('master', newPass)
+                this.storage.set('master', newPass);
             })
-            chrome.runtime.sendMessage({action: 'SET_STATE', params: {isSetMaster: true}})
+            chrome.runtime.sendMessage({action: 'SET_STATE', params: {isSetMaster: true}});
         }
         else {
             console.log('passwords do not match');
@@ -47,6 +52,7 @@ class App extends Component {
                 this.master = pass;
                 this.setState({isLogged: true});
                 chrome.runtime.sendMessage({action: 'SET_STATE', params: {isLogged: true}})
+                chrome.runtime.sendMessage({action: 'SET_MASTER', value: pass})
             }
             else {
                 console.log('passwords do not match')
@@ -73,7 +79,7 @@ class App extends Component {
             view = <LogIn onLogIn={this.logIn.bind(this)}/>
         }
         else {
-            view = <h1>You are logged in</h1>
+            view = <h1>You are logged in {this.master}</h1>
         }
 
         return (
