@@ -3,7 +3,6 @@ import CryptoJS from 'crypto-js';
 class PasswordManager {
     hash(string, salt) {
         if (!salt) salt = this._generateSalt(false);
-        let i = 0;
         let str = `${salt}${string}${salt}`;
         let hash = CryptoJS.SHA256(str);
         let hashStr = hash.toString(CryptoJS.enc.Hex);

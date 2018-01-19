@@ -1,8 +1,9 @@
 /*global chrome*/
 import React, { Component } from 'react';
 import './App.css';
-import Storage from './storage.js'
-import PasswordManager from './passwordManager.js'
+import Storage from './storage/storage'
+import AppsStorage from './storage/appStorage'
+import PasswordManager from './passwordManager'
 
 import CreateMasterPw from './components/CreateMasterPw'
 import LogIn from './components/LogIn'
@@ -13,6 +14,9 @@ class App extends Component {
         super();
         this.storage = new Storage();
         this.pwManager = new PasswordManager();
+
+        this.apps = new AppsStorage(this.storage);
+
         this.master = null;
         this.state = {
             isSetMaster: false,
