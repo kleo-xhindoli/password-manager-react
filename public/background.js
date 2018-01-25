@@ -27,7 +27,29 @@ chrome.runtime.onMessage.addListener(
             case 'GET_MASTER':
                 sendResponse(master);
                 break;
+            case 'GET_CURRENT_DOMAIN':
+                chrome.tabs.getSelected(null, (tab) => {
+                    const domain = _getDomainFromUrl(tab.url);
+                    sendResponse(domain);
+                });
+                return true; //needed to let chrome know that the message will be sent async
         }
     }
     
 );
+
+
+function _getDomainFromUrl(url) {
+    let domain = '';
+    if (url.indexOf("://") > -1) {
+        domain = url.split('/')[2];
+    }
+    else {
+        domain = url.split('/')[0];
+    }
+
+    //find & remove "?"
+    domain = domain.split('?')[0];
+
+    return domain;
+}

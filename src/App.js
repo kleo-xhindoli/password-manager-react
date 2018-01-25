@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import Storage from './storage/storage'
-import AppsStorage from './storage/appStorage'
 import PasswordManager from './passwordManager'
 
 import CreateMasterPw from './components/CreateMasterPw'
 import LogIn from './components/LogIn'
 import Footer from './components/Footer'
+import Main from './components/Main'
 
 class App extends Component {
     constructor() {
@@ -15,7 +15,6 @@ class App extends Component {
         this.storage = new Storage();
         this.pwManager = new PasswordManager();
 
-        this.apps = new AppsStorage(this.storage);
 
         this.master = null;
         this.state = {
@@ -35,7 +34,7 @@ class App extends Component {
         chrome.runtime.sendMessage({action: 'GET_MASTER'}, (val) => {
             console.log(`Got master: ${val}`)
             this.master = val;
-        })
+        });
     }
 
     createPassword({ newPass, confirmPass }) {
@@ -92,7 +91,7 @@ class App extends Component {
             view = <LogIn onLogIn={this.logIn.bind(this)}/>
         }
         else {
-            view = <h1>You are logged in {this.master}</h1>
+            view = <Main master={this.master} storage={this.storage}/>
         }
 
         return (

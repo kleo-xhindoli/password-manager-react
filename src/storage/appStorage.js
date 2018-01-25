@@ -57,6 +57,10 @@ class AppStorage {
         return this.storage.filter('apps', filterObj);
     }
 
+    getByDomain(domain) {
+        return this.filter({domain});
+    }
+
 }
 
 export default AppStorage;
