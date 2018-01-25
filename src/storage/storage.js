@@ -66,18 +66,18 @@ class PW_Storage {
     insert(collection, el) {
         return this.get(collection)
         .then((res) => {
-            console.log ('collection: ' + collection)
-            console.log ('res:')
             console.log(res)
             if (!el.id)
-                el.id = this._generateId();
+                el.id = this.generateId();
             if (!el.created_at) {
                 const date = new Date();
                 el.created_at = date.toISOString();
             }
-            debugger;
             res.push(el);
-            return this.set(collection, res);
+            return this.set(collection, res)
+            .then(() => {
+                return el;
+            })
         })
     }
 
@@ -128,7 +128,7 @@ class PW_Storage {
         });
     }
 
-    _generateId() {
+    generateId() {
         let s4 = () => {
             return Math.floor((1 + Math.random()) * 0x10000)
             .toString(16)

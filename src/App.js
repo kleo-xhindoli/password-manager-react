@@ -25,14 +25,10 @@ class App extends Component {
 
     componentDidMount() {
         chrome.runtime.sendMessage({action: "GET_STATE"}, (response) => {
-            console.log(response);
-            this.setState(response, () => {
-                console.log(this.state)
-            })
+            this.setState(response)
         });
 
         chrome.runtime.sendMessage({action: 'GET_MASTER'}, (val) => {
-            console.log(`Got master: ${val}`)
             this.master = val;
         });
     }
