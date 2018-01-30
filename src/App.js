@@ -16,10 +16,10 @@ class App extends Component {
         this.pwManager = new PasswordManager();
 
 
-        this.master = null;
         this.state = {
             isSetMaster: false,
             isLogged: false,
+            master: null
         }
     }
 
@@ -29,7 +29,7 @@ class App extends Component {
         });
 
         chrome.runtime.sendMessage({action: 'GET_MASTER'}, (val) => {
-            this.master = val;
+            this.setState({master: val});
         });
     }
 
@@ -57,10 +57,11 @@ class App extends Component {
         })
         .then((salt) => {
             if (this.pwManager.hash(pass, salt).hash === masterHash) {
-                this.master = this.pwManager.generateKeyFromPassword(pass, salt);
-                this.setState({isLogged: true});
-                chrome.runtime.sendMessage({action: 'SET_STATE', params: {isLogged: true}})
-                chrome.runtime.sendMessage({action: 'SET_MASTER', value: this.master})
+                let master = this.pwManager.generateKeyFromPassword(pass, salt);
+                this.setState({isLogged: true, master});
+                chrome.runtime.sendMessage({action: 'SET_STATE', params: {isLogged: true}}, () => {
+                    chrome.runtime.sendMessage({action: 'SET_MASTER', value: master});
+                });
             }
             else {
                 console.log('passwords do not match')
@@ -87,7 +88,7 @@ class App extends Component {
             view = <LogIn onLogIn={this.logIn.bind(this)}/>
         }
         else {
-            view = <Main master={this.master} storage={this.storage}/>
+            view = <Main master={this.state.master} storage={this.storage} pwManager={this.pwManager}/>
         }
 
         return (

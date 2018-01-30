@@ -1,0 +1,16 @@
+.Main .icon-btn {
+    cursor: pointer;
+    color: gray;
+    font-size: 14px;
+    position: absolute;
+    top: 98px;
+    right: 40px;
+}
+
+.Main .icon-btn:hover {
+    color: #76C3D7;
+}
+
+.Main input {
+    position: relative;
+}

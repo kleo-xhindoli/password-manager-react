@@ -2,9 +2,8 @@ import Joi from 'joi-browser';
 
 class PasswordStorage {
 
-    constructor(storage, key) {
+    constructor(storage) {
         this.storage = storage;
-        this.key = key;
         this.schema = Joi.object().keys({
             id: Joi.string().optional(),
             app_id: Joi.string().required(),

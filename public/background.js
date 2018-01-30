@@ -17,7 +17,6 @@ chrome.runtime.onMessage.addListener(
                 Object.keys(request.params).forEach((key) => {
                     state[key] = request.params[key];
                 })
-                console.log(state);
                 sendResponse(state);
                 break;
             case 'SET_MASTER':
